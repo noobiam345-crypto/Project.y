@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoulStreet - Official Pop Culture & Streetwear Store</title>
+  
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+      padding-bottom: 40px;
+      overflow-x: hidden;
+    }
+
+    /* 3D Intro Splash */
+    #splash-intro {
+      position: fixed;
+      inset: 0;
+      background: #090d16;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: dismissSplash 0.4s ease 1.8s forwards;
+    }
+    @keyframes dismissSplash {
+      to { opacity: 0; visibility: hidden; pointer-events: none; }
+    }
+    .cube-container { perspective: 800px; margin-bottom: 15px; }
+    .cloth-cube {
+      width: 70px;
+      height: 70px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: spinClothCube 3s infinite linear;
+    }
+    @keyframes spinClothCube {
+      0% { transform: rotateX(-15deg) rotateY(0deg); }
+      100% { transform: rotateX(-15deg) rotateY(360deg); }
+    }
+    .c-face {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border: 2px solid #e11d48;
+      background: #1e1b4b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fb7185;
+      font-weight: 900;
+      font-size: 22px;
+      border-radius: 12px;
+    }
+    .cf-1 { transform: rotateY(0deg) translateZ(35px); }
+    .cf-2 { transform: rotateY(180deg) translateZ(35px); }
+    .cf-3 { transform: rotateY(90deg) translateZ(35px); }
+    .cf-4 { transform: rotateY(-90deg) translateZ(35px); }
+    .cf-5 { transform: rotateX(90deg) translateZ(35px); background: #e11d48; color:#fff; }
+    .cf-6 { transform: rotateX(-90deg) translateZ(35px); background: #0f172a; }
+
+    /* Top Strip (The Souled Store Style) */
+    .top-strip {
+      background: #e11d48;
+      color: #ffffff;
+      font-size: 11px;
+      text-align: center;
+      padding: 6px 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Navbar */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      gap: 8px;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #0f172a;
+    }
+    .brand-icon {
+      background: #e11d48;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-title h1 {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .brand-title span {
+      font-size: 9px;
+      color: #e11d48;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Location Picker */
+    .loc-tag {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      border-radius: 20px;
+      padding: 5px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 700;
+    }
+
+    /* Cart Button */
+    .cart-btn-header {
+      background: #0f172a;
+      color: #ffffff;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cart-counter {
+      background: #e11d48;
+      color: #fff;
+      border-radius: 10px;
+      padding: 1px 6px;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    /* The Souled Store Category Bar */
+    .cat-bar {
+      background: #ffffff;
+      padding: 10px 8px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+      border-bottom: 1px solid #e2e8f0;
+      scrollbar-width: none;
+    }
+    .cat-bar::-webkit-scrollbar { display: none; }
+    .cat-btn {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #475569;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .cat-btn.active {
+      background: #e11d48;
+      color: #ffffff;
+      border-color: #e11d48;
+      box-shadow: 0 2px 6px rgba(225,29,72,0.3);
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      color: #ffffff;
+      padding: 24px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-badge {
+      background: #e11d48;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hero h2 {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .hero p {
+      font-size: 12px;
+      color: #cbd5e1;
+      max-width: 360px;
+      margin: 0 auto;
+      line-height: 1.4;
+    }
+
+    /* Product Section */
+    .container {
+      max-width: 920px;
+      margin: 14px auto;
+      padding: 0 10px;
+    }
+    .sec-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .sec-title h3 {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+    }
+    .sec-title span {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* Product Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 850px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .img-wrap {
+      width: 100%;
+      height: 200px;
+      background: #f1f5f9;
+      position: relative;
+    }
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .badge-pop {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #0f172a;
+      color: #fb7185;
+      font-size: 9px;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 12px;
+    }
+    .card-cat {
+      font-size: 9px;
+      font-weight: 900;
+      color: #e11d48;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 800;
+      margin: 3px 0 6px;
+      line-height: 1.25;
+    }
+    .price-line {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .price {
+      font-size: 18px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+    .mrp {
+      font-size: 11px;
+      text-decoration: line-through;
+      color: #94a3b8;
+    }
+    .off {
+      font-size: 11px;
+      font-weight: 800;
+      color: #16a34a;
+    }
+
+    /* Size Selector (Souled Store Essential) */
+    .size-selector-wrap {
+      margin: 6px 0 10px;
+    }
+    .size-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: #64748b;
+      margin-bottom: 4px;
+      display: block;
+      text-transform: uppercase;
+    }
+    .size-options {
+      display: flex;
+      gap: 6px;
+    }
+    .size-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .size-btn.active {
+      border-color: #e11d48;
+      background: #e11d48;
+      color: #ffffff;
+    }
+
+    .card-desc {
+      font-size: 11px;
+      color: #475569;
+      line-height: 1.45;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 8px;
+    }
+
+    .card-actions {
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #ffffff;
+    }
+    .btn-add {
+      background: #ffffff;
+      border: 1.5px solid #e11d48;
+      color: #e11d48;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn-buy {
+      background: #e11d48;
+      border: none;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* About Us Box */
+    .about-box {
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 20px 14px;
+      text-align: center;
+      margin: 24px 0;
+    }
+    .about-box h4 {
+      font-size: 15px;
+      font-weight: 900;
+      color: #fb7185;
+      margin-bottom: 4px;
+    }
+    .about-box p {
+      font-size: 11px;
+      line-height: 1.5;
+      color: #cbd5e1;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* Cart Sidebar */
+    .cart-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 2000;
+      display: none;
+    }
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 360px;
+      height: 100%;
+      background: #ffffff;
+      z-index: 2001;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .cart-head {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+    .cart-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-bottom: 1px solid #f1f5f9;
+      padding: 10px 0;
+    }
+    .cart-row img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .cart-foot {
+      border-top: 1px solid #e2e8f0;
+      padding: 14px;
+      background: #f8fafc;
+    }
+    .cart-total-line {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 900;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .btn-checkout-submit {
+      background: #e11d48;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 13px;
+      width: 100%;
+      border: none;
+      padding: 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Checkout & Location Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 380px;
+      padding: 16px;
+      position: relative;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .f-group {
+      margin-bottom: 10px;
+    }
+    .f-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 3px;
+      color: #334155;
+    }
+    .f-group input, .f-group textarea, .f-group select {
+      width: 100%;
+      padding: 8px;
+      font-size: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    /* Payment Option Card Styles */
+    .pay-card {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .pay-card.active {
+      border-color: #e11d48;
+      background: #fff1f2;
+    }
+    .pay-card input[type="radio"] {
+      accent-color: #e11d48;
+    }
+    .pay-sub-form {
+      padding: 8px;
+      background: #f8fafc;
+      border-radius: 6px;
+      margin-top: 6px;
+      font-size: 11px;
+    }
+    .btn-submit-order {
+      background: #e11d48;
+      color: #ffffff;
+      border: none;
+      width: 100%;
+      padding: 11px;
+      font-size: 13px;
+      font-weight: 900;
+      border-radius: 8px;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .loc-chip {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-block;
+      margin: 2px;
+    }
+  </style>
+
+  <!-- Core JavaScript in Head -->
+  <script>
+    var apparelDB = {
+      1: { id: 1, title: "Tokyo Shadow Oversized Anime T-Shirt", price: 799, img: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=400&q=80" },
+      2: { id: 2, title: "Tactical Multi-Pocket Cargo Pants (Matte Black)", price: 1299, img: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=400&q=80" },
+      3: { id: 3, title: "Cyberpunk Heavyweight Fleece Winter Hoodie", price: 1499, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=400&q=80" },
+      4: { id: 4, title: "Vintage Wash Heavyweight Denim Jacket", price: 1899, img: "https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?auto=format&fit=crop&w=400&q=80" },
+      5: { id: 5, title: "Monochrome Boxy Streetwear Graphic Polo", price: 699, img: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=400&q=80" },
+      6: { id: 6, title: "Relaxed Fit Urban Corduroy Shacket", price: 1199, img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=400&q=80" }
+    };
+
+    var cart = [];
+
+    function dismissSplash() {
+      var s = document.getElementById('splash-intro');
+      if (s) s.style.display = 'none';
+    }
+
+    // Size Selection Handler
+    function selectApparelSize(btnElem) {
+      var parent = btnElem.parentElement;
+      var buttons = parent.querySelectorAll('.size-btn');
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('active');
+      }
+      btnElem.classList.add('active');
+    }
+
+    // Category Filtering
+    function filterApparel(catName, btnElem) {
+      var allCards = document.querySelectorAll('.card');
+      for (var i = 0; i < allCards.length; i++) {
+        var cardCat = allCards[i].getAttribute('data-cat');
+        if (catName === 'all' || cardCat === catName) {
+          allCards[i].style.display = 'flex';
+        } else {
+          allCards[i].style.display = 'none';
+        }
+      }
+      var allButtons = document.querySelectorAll('.cat-btn');
+      for (var j = 0; j < allButtons.length; j++) {
+        allButtons[j].classList.remove('active');
+      }
+      if (btnElem) btnElem.classList.add('active');
+    }
+
+    // Cart Operations
+    function addToCart(id) {
+      var item = apparelDB[id];
+      if (!item) return;
+
+      var found = null;
+      for (var i = 0; i < cart.length; i++) {
+        if (cart[i].id === id) { found = cart[i]; break; }
+      }
+
+      if (found) {
+        found.qty += 1;
+      } else {
+        cart.push({ id: item.id, title: item.title, price: item.price, img: item.img, qty: 1 });
+      }
+
+      updateCart();
+      openCart();
+    }
+
+    function buyNow(id) {
+      addToCart(id);
+      openCheckout();
+    }
+
+    function modifyQty(id, delta) {
+      for (var i = 0; i < cart.length; i++) {
+        if (cart[i].id === id) {
+          cart[i].qty += delta;
+          if (cart[i].qty <= 0) cart.splice(i, 1);
+          break;
+        }
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      var totalQty = 0; var totalAmt = 0;
+      for (var i = 0; i < cart.length; i++) {
+        totalQty += cart[i].qty;
+        totalAmt += (cart[i].price * cart[i].qty);
+      }
+
+      var badge = document.getElementById('cart-badge');
+      var headQty = document.getElementById('cart-head-count');
+      var drawerTotal = document.getElementById('cart-total-amt');
+      var modalTotal = document.getElementById('modal-total-amt');
+      var listWrap = document.getElementById('cart-items-wrapper');
+      var chkBtn = document.getElementById('btn-checkout');
+
+      if (badge) badge.innerText = totalQty;
+      if (headQty) headQty.innerText = totalQty;
+      if (drawerTotal) drawerTotal.innerText = '₹' + totalAmt;
+      if (modalTotal) modalTotal.innerText = '₹' + totalAmt;
+
+      if (!listWrap) return;
+
+      if (cart.length === 0) {
+        listWrap.innerHTML = '<div style="text-align:center; padding:35px 10px; color:#94a3b8;"><span style="font-size:24px;">🛍️</span><p style="font-size:12px; font-weight:700; margin-top:4px;">Your Bag is Empty</p></div>';
+        if (chkBtn) chkBtn.disabled = true;
+      } else {
+        if (chkBtn) chkBtn.disabled = false;
+        var html = '';
+        for (var j = 0; j < cart.length; j++) {
+          var itm = cart[j];
+          html += '<div class="cart-row">' +
+            '<img src="' + itm.img + '" alt="item">' +
+            '<div style="flex:1;">' +
+              '<div style="font-size:11px; font-weight:700; line-height:1.2;">' + itm.title + '</div>' +
+              '<div style="font-size:11px; font-weight:800; color:#e11d48; margin-top:2px;">₹' + itm.price + '</div>' +
+              '<div style="display:flex; gap:6px; align-items:center; margin-top:4px;">' +
+                '<button type="button" onclick="modifyQty(' + itm.id + ',-1)" style="padding:1px 6px; font-weight:bold;">-</button>' +
+                '<span style="font-size:11px; font-weight:bold;">' + itm.qty + '</span>' +
+                '<button type="button" onclick="modifyQty(' + itm.id + ',1)" style="padding:1px 6px; font-weight:bold;">+</button>' +
+              '</div>' +
+            '</div>' +
+            '<div style="font-size:12px; font-weight:800;">₹' + (itm.price * itm.qty) + '</div>' +
+          '</div>';
+        }
+        listWrap.innerHTML = html;
+      }
+    }
+
+    // Drawer Controls
+    function openCart() {
+      var mask = document.getElementById('cart-mask');
+      var drawer = document.getElementById('cart-drawer');
+      if (mask) mask.style.display = 'block';
+      if (drawer) drawer.style.transform = 'translateX(0)';
+    }
+
+    function closeCart() {
+      var mask = document.getElementById('cart-mask');
+      var drawer = document.getElementById('cart-drawer');
+      if (drawer) drawer.style.transform = 'translateX(100%)';
+      if (mask) mask.style.display = 'none';
+    }
+
+    // Checkout Popup
+    function openCheckout() {
+      closeCart();
+      var modal = document.getElementById('checkout-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeCheckout() {
+      var modal = document.getElementById('checkout-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleOrderSubmit(e) {
+      if (e) e.preventDefault();
+      var chosenMethod = document.querySelector('input[name="payment_method"]:checked').value;
+      var methodTitle = document.getElementById('order-payment-method-name');
+      if (methodTitle) methodTitle.innerText = chosenMethod;
+
+      closeCheckout();
+      var success = document.getElementById('order-confirmed-modal');
+      if (success) success.style.display = 'flex';
+      cart = [];
+      updateCart();
+    }
+
+    function closeSuccess() {
+      var success = document.getElementById('order-confirmed-modal');
+      if (success) success.style.display = 'none';
+    }
+
+    // Payment Selection
+    function selectPayMode(mode) {
+      document.getElementById('form-upi-block').style.display = (mode === 'upi') ? 'block' : 'none';
+      document.getElementById('form-card-block').style.display = (mode === 'card') ? 'block' : 'none';
+      document.getElementById('form-nb-block').style.display = (mode === 'nb') ? 'block' : 'none';
+      document.getElementById('form-cod-block').style.display = (mode === 'cod') ? 'block' : 'none';
+
+      var cards = document.querySelectorAll('.pay-card');
+      for (var i = 0; i < cards.length; i++) {
+        cards[i].classList.remove('active');
+      }
+      var activeCard = document.getElementById('opt-' + mode);
+      if (activeCard) activeCard.classList.add('active');
+    }
+
+    // Location Picker Controls
+    function openLocationPicker() {
+      var modal = document.getElementById('location-picker-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeLocationPicker() {
+      var modal = document.getElementById('location-picker-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function setDirectLocation(locString) {
+      var label = document.getElementById('location-display-text');
+      var formPin = document.getElementById('checkout-address-pin');
+      if (label) label.innerText = locString;
+      if (formPin) formPin.value = locString;
+      closeLocationPicker();
+    }
+
+    function saveManualPincode() {
+      var inp = document.getElementById('manual-pin-input');
+      if (inp && inp.value.trim().length === 6) {
+        setDirectLocation('Mumbai, ' + inp.value.trim());
+      } else {
+        alert('Please enter a valid 6-digit Pincode!');
+      }
+    }
+
+    function detectLiveGPSLocation() {
+      var statusTag = document.getElementById('gps-status-msg');
+      if (!navigator.geolocation) {
+        alert('Geolocation not supported by your browser.');
+        return;
+      }
+      if (statusTag) statusTag.innerText = '📡 Requesting GPS coordinates...';
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          var lat = position.coords.latitude.toFixed(2);
+          var lon = position.coords.longitude.toFixed(2);
+          if (statusTag) statusTag.innerText = '✓ Location Tracked!';
+          setTimeout(function() {
+            setDirectLocation('GPS: ' + lat + '°N, ' + lon + '°E (Mumbai)');
+          }, 600);
+        },
+        function(error) {
+          if (statusTag) statusTag.innerText = '❌ GPS denied, set to default Mumbai';
+          setDirectLocation('Mumbai, 400101');
+        },
+        { timeout: 8000 }
+      );
+    }
+  </script>
+</head>
+<body>
+
+  <!-- 1. 3D INTRO SPLASH SCREEN -->
+  <div id="splash-intro">
+    <div class="cube-container">
+      <div class="cloth-cube">
+        <div class="c-face cf-1">👕</div>
+        <div class="c-face cf-2">🔥</div>
+        <div class="c-face cf-3">⚡</div>
+        <div class="c-face cf-4">⭐</div>
+        <div class="c-face cf-5">SOUL</div>
+        <div class="c-face cf-6"></div>
+      </div>
+    </div>
+    <h2 style="color:#ffffff; font-size:24px; font-weight:900;">SOUL<span style="color:#e11d48;">STREET</span></h2>
+    <p style="color:#cbd5e1; font-size:11px; margin: 4px 0 12px;">Official Pop Culture & Streetwear Store</p>
+    <button type="button" onclick="dismissSplash()" style="background:#e11d48; color:#fff; border:none; padding:6px 16px; border-radius:20px; font-weight:800; font-size:11px; cursor:pointer;">Explore Fits ➔</button>
+  </div>
+
+  <!-- 2. PROMOTIONAL ANNOUNCEMENT BAR -->
+  <div class="top-strip">⚡ SOULSTREET DROPS: EXTRA ₹200 OFF ON FIRST ORDER | CODE: SOUL200</div>
+
+  <!-- 3. STREETWEAR HEADER -->
+  <header>
+    <a href="#" class="brand-wrap">
+      <div class="brand-icon">S</div>
+      <div class="brand-title">
+        <h1>SoulStreet</h1>
+        <span>Pop Culture Apparel</span>
+      </div>
+    </a>
+
+    <!-- Delivery Location Tracker -->
+    <div class="loc-tag" onclick="openLocationPicker()">
+      <span>📍</span>
+      <span id="location-display-text">Mumbai, 400101</span>
+    </div>
+
+    <!-- Bag / Cart Button -->
+    <button type="button" class="cart-btn-header" onclick="openCart()">
+      <span>🛍️</span>
+      <span class="cart-counter" id="cart-badge">0</span>
+    </button>
+  </header>
+
+  <!-- 4. CATEGORY FILTER TABS (THE SOULED STORE STYLE) -->
+  <div class="cat-bar">
+    <button type="button" class="cat-btn active" onclick="filterApparel('all', this)">⚡ All Fits</button>
+    <button type="button" class="cat-btn" onclick="filterApparel('anime', this)">🎌 Anime Merch</button>
+    <button type="button" class="cat-btn" onclick="filterApparel('tees', this)">👕 Oversized Tees</button>
+    <button type="button" class="cat-btn" onclick="filterApparel('cargo', this)">👖 Cargo Pants</button>
+    <button type="button" class="cat-btn" onclick="filterApparel('hoodie', this)">🧥 Hoodies</button>
+    <button type="button" class="cat-btn" onclick="filterApparel('jacket', this)">🕶️ Jackets & Polos</button>
+  </div>
+
+  <!-- 5. HERO BANNER -->
+  <div class="hero">
+    <div class="hero-badge">✦ OFFICIAL STREETWEAR DROP</div>
+    <h2>Engineered For The Pop Culture Generation</h2>
+    <p>Premium 240+ GSM drop-shoulder tees, heavy winter hoodies, and utilitarian cargo pants delivered across India.</p>
+  </div>
+
+  <!-- 6. HARDCODED APPAREL CATALOG (6 FEATURED ITEMS) -->
+  <main class="container">
+    <div class="sec-title">
+      <h3>Fresh Streetwear Drops (6 Items)</h3>
+      <span>100% Combed Cotton</span>
+    </div>
+
+    <div class="grid">
+
+      <!-- Product 1: Anime Tee -->
+      <div class="card" data-cat="anime">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=400&q=80" alt="Anime Tee">
+          <div class="badge-pop">Top Anime Drop</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Oversized Tee</div>
+          <div class="card-title">Tokyo Shadow Oversized Anime T-Shirt</div>
+          <div class="price-line">
+            <span class="price">₹799</span>
+            <span class="mrp">₹1,499</span>
+            <span class="off">46% OFF</span>
+          </div>
+
+          <!-- Size Selector -->
+          <div class="size-selector-wrap">
+            <span class="size-label">Select Size:</span>
+            <div class="size-options">
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">S</button>
+              <button type="button" class="size-btn active" onclick="selectApparelSize(this)">M</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">L</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">XL</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">XXL</button>
+            </div>
+          </div>
+
+          <!-- 62 Words Description -->
+          <div class="card-desc">
+            Crafted from 240 GSM heavy combed French terry cotton, this drop-shoulder oversized t-shirt offers an ultra-breathable, relaxed silhouette built for everyday streetwear flex. Featuring high-density Japanese anime screen prints resistant to multiple machine washes, ribbed neck tape for shape retention, and pre-shrunk organic fabric. Perfect for effortless casual hangouts, college campus days, or lounge aesthetics.
+          </div>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="btn-add" onclick="addToCart(1)">Add to Bag</button>
+          <button type="button" class="btn-buy" onclick="buyNow(1)">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product 2: Cargo Pants -->
+      <div class="card" data-cat="cargo">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=400&q=80" alt="Cargo Pants">
+          <div class="badge-pop">Utility Trend</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Bottomwear</div>
+          <div class="card-title">Tactical Multi-Pocket Cargo Pants (Matte Black)</div>
+          <div class="price-line">
+            <span class="price">₹1,299</span>
+            <span class="mrp">₹2,499</span>
+            <span class="off">48% OFF</span>
+          </div>
+
+          <!-- Size Selector -->
+          <div class="size-selector-wrap">
+            <span class="size-label">Select Waist:</span>
+            <div class="size-options">
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">28</button>
+              <button type="button" class="size-btn active" onclick="selectApparelSize(this)">30</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">32</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">34</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">36</button>
+            </div>
+          </div>
+
+          <!-- 60 Words Description -->
+          <div class="card-desc">
+            Engineered with military-grade durable cotton twill and stretch elastane, these tactical multi-pocket cargo joggers blend utility with contemporary urban comfort. Featuring six deep utility pockets, heavy-duty zipper closures, an elasticated waistband with contrast drawstrings, and snug ankle cuffs. Designed to pair impeccably with oversized tees and chunky sneakers for an undeniable streetwear statement anywhere you go.
+          </div>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="btn-add" onclick="addToCart(2)">Add to Bag</button>
+          <button type="button" class="btn-buy" onclick="buyNow(2)">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product 3: Heavyweight Hoodie -->
+      <div class="card" data-cat="hoodie">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=400&q=80" alt="Hoodie">
+          <div class="badge-pop">Winter Essential</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Outerwear</div>
+          <div class="card-title">Cyberpunk Heavyweight Fleece Winter Hoodie</div>
+          <div class="price-line">
+            <span class="price">₹1,499</span>
+            <span class="mrp">₹2,999</span>
+            <span class="off">50% OFF</span>
+          </div>
+
+          <!-- Size Selector -->
+          <div class="size-selector-wrap">
+            <span class="size-label">Select Size:</span>
+            <div class="size-options">
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">S</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">M</button>
+              <button type="button" class="size-btn active" onclick="selectApparelSize(this)">L</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">XL</button>
+            </div>
+          </div>
+
+          <!-- 59 Words Description -->
+          <div class="card-desc">
+            Wrap yourself in absolute comfort with this 380 GSM brushed fleece cotton hoodie, engineered to deliver unmatched winter warmth and plush softness. Features an oversized kangaroo pocket, double-layered hood with metallic eyelet drawcords, and custom drop-shoulder tailoring for that effortless aesthetic drape. Bio-washed for zero lint accumulation and color fading even after extensive seasonal rotations.
+          </div>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="btn-add" onclick="addToCart(3)">Add to Bag</button>
+          <button type="button" class="btn-buy" onclick="buyNow(3)">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product 4: Denim Jacket -->
+      <div class="card" data-cat="jacket">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?auto=format&fit=crop&w=400&q=80" alt="Denim Jacket">
+          <div class="badge-pop">Classic Vintage</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Jacket</div>
+          <div class="card-title">Vintage Wash Heavyweight Denim Jacket</div>
+          <div class="price-line">
+            <span class="price">₹1,899</span>
+            <span class="mrp">₹3,499</span>
+            <span class="off">45% OFF</span>
+          </div>
+
+          <!-- Size Selector -->
+          <div class="size-selector-wrap">
+            <span class="size-label">Select Size:</span>
+            <div class="size-options">
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">M</button>
+              <button type="button" class="size-btn active" onclick="selectApparelSize(this)">L</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">XL</button>
+            </div>
+          </div>
+
+          <!-- 56 Words Description -->
+          <div class="card-desc">
+            Constructed with 100% rugged authentic denim twill, this washed trucker jacket delivers the quintessential vintage retro charm. Embellished with rustic brass shank buttons, dual chest flap pockets, and tailored side welt entries. Designed with a roomy boxy cut that layers effortlessly over graphic hoodies and casual tees for chilly evening strolls.
+          </div>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="btn-add" onclick="addToCart(4)">Add to Bag</button>
+          <button type="button" class="btn-buy" onclick="buyNow(4)">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product 5: Graphic Polo -->
+      <div class="card" data-cat="tees">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=400&q=80" alt="Polo">
+          <div class="badge-pop">Smart Casual</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Polos</div>
+          <div class="card-title">Monochrome Boxy Streetwear Graphic Polo</div>
+          <div class="price-line">
+            <span class="price">₹699</span>
+            <span class="mrp">₹1,299</span>
+            <span class="off">46% OFF</span>
+          </div>
+
+          <!-- Size Selector -->
+          <div class="size-selector-wrap">
+            <span class="size-label">Select Size:</span>
+            <div class="size-options">
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">S</button>
+              <button type="button" class="size-btn active" onclick="selectApparelSize(this)">M</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">L</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">XL</button>
+            </div>
+          </div>
+
+          <!-- 55 Words Description -->
+          <div class="card-desc">
+            Redefining formal wear with an energetic modern edge, this boxy-fit polo combines breathable pique cotton with clean contemporary typographic typography. Features a reinforced ribbed flat collar, twin-button placket, and side split hems for optimal drape. A versatile wardrobe hybrid equally primed for smart office Fridays or relaxed café dates.
+          </div>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="btn-add" onclick="addToCart(5)">Add to Bag</button>
+          <button type="button" class="btn-buy" onclick="buyNow(5)">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product 6: Corduroy Shacket -->
+      <div class="card" data-cat="jacket">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=400&q=80" alt="Corduroy Shacket">
+          <div class="badge-pop">Urban Layer</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Shackets</div>
+          <div class="card-title">Relaxed Fit Urban Corduroy Shacket</div>
+          <div class="price-line">
+            <span class="price">₹1,199</span>
+            <span class="mrp">₹2,199</span>
+            <span class="off">45% OFF</span>
+          </div>
+
+          <!-- Size Selector -->
+          <div class="size-selector-wrap">
+            <span class="size-label">Select Size:</span>
+            <div class="size-options">
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">M</button>
+              <button type="button" class="size-btn active" onclick="selectApparelSize(this)">L</button>
+              <button type="button" class="size-btn" onclick="selectApparelSize(this)">XL</button>
+            </div>
+          </div>
+
+          <!-- 57 Words Description -->
+          <div class="card-desc">
+            Crafted with plush wide-wale cotton corduroy fabric, this oversized shirt-jacket hybrid delivers textured warmth during breezy transitional weather. Featuring oversized chest patch pockets, tonal horn buttons, and straight drop shoulders. Wear it buttoned up as an imposing standalone overshirt or draped wide open over your favorite vintage graphic t-shirts.
+          </div>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="btn-add" onclick="addToCart(6)">Add to Bag</button>
+          <button type="button" class="btn-buy" onclick="buyNow(6)">Buy Now</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 7. ABOUT US BRAND STORY (COLLEGE ASSIGNMENT REQUIREMENT) -->
+    <div class="about-box">
+      <h4>About SoulStreet Apparels</h4>
+      <p>"Founded in 2026, SoulStreet was born to celebrate pop culture, fandoms, and authentic Indian streetwear culture. We curate high-density heavyweight apparel with bold fandom graphics and relaxed cuts, proving that premium everyday fashion can be exceptionally comfortable and genuinely affordable for every youth."</p>
+    </div>
+  </main>
+
+  <!-- 8. SLIDE-IN BAG / CART DRAWER -->
+  <div class="cart-mask" id="cart-mask" onclick="closeCart()"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-head">
+      <div style="font-weight:900; font-size:14px;">🛍️ My Shopping Bag (<span id="cart-head-count">0</span>)</div>
+      <button type="button" onclick="closeCart()" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer;">&times;</button>
+    </div>
+    <div class="cart-items" id="cart-items-wrapper">
+      <div style="text-align:center; padding:35px 10px; color:#94a3b8;">
+        <span style="font-size:24px;">🛍️</span>
+        <p style="font-size:12px; font-weight:700; margin-top:4px;">Your Bag is Empty</p>
+      </div>
+    </div>
+    <div class="cart-foot">
+      <div class="cart-total-line">
+        <span>Total Payable:</span>
+        <span id="cart-total-amt" style="color:#e11d48;">₹0</span>
+      </div>
+      <button type="button" class="btn-checkout-submit" id="btn-checkout" onclick="openCheckout()" disabled>Proceed To Checkout ➔</button>
+    </div>
+  </aside>
+
+  <!-- 9. DUMMY CHECKOUT WITH GPAY, CARDS, NETBANKING & COD -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-card">
+      <button type="button" onclick="closeCheckout()" style="position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; cursor:pointer;">&times;</button>
+      <h3 style="font-size:16px; font-weight:900; margin-bottom:4px; color:#0f172a;">SoulStreet Express Checkout</h3>
+      <p style="font-size:11px; color:#64748b; margin-bottom:12px;">Fill delivery details & choose payment method</p>
+      
+      <form onsubmit="handleOrderSubmit(event)">
+        <div class="f-group">
+          <label>Full Name</label>
+          <input type="text" required placeholder="e.g. Chitresh Singh">
+        </div>
+        <div class="f-group">
+          <label>Phone Number (10 Digits)</label>
+          <input type="tel" required pattern="[0-9]{10}" placeholder="9876543210">
+        </div>
+        <div class="f-group">
+          <label>Delivery Area / Pincode</label>
+          <input type="text" id="checkout-address-pin" required value="Mumbai, 400101">
+        </div>
+        <div class="f-group">
+          <label>Complete Street Address</label>
+          <textarea required rows="2" placeholder="Flat No, Building, Landmark, Area"></textarea>
+        </div>
+
+        <!-- PAYMENT METHOD SELECTION -->
+        <div style="margin: 12px 0 6px;">
+          <label style="display:block; font-size:12px; font-weight:800; color:#0f172a; margin-bottom:6px;">Select Payment Option:</label>
+
+          <!-- 1. GPay / PhonePe / UPI -->
+          <div class="pay-card active" id="opt-upi" onclick="selectPayMode('upi')">
+            <input type="radio" id="pay_upi" name="payment_method" value="Google Pay / UPI" checked>
+            <label for="pay_upi" style="cursor:pointer; font-size:12px; font-weight:800; display:flex; align-items:center; gap:6px;">
+              <span>📱</span> Google Pay / PhonePe / UPI
+            </label>
+          </div>
+          <div id="form-upi-block" class="pay-sub-form">
+            <label style="font-weight:700; color:#475569;">Enter UPI ID (e.g. mobile@okhdfcbank):</label>
+            <input type="text" placeholder="yourname@okaxis" style="width:100%; padding:6px; font-size:11px; margin-top:3px; border:1px solid #cbd5e1; border-radius:4px;">
+            <span style="font-size:10px; color:#16a34a; font-weight:800; display:block; margin-top:3px;">⚡ Instant ₹200 Cashback Applicable</span>
+          </div>
+
+          <!-- 2. Cards -->
+          <div class="pay-card" id="opt-card" onclick="selectPayMode('card')">
+            <input type="radio" id="pay_card" name="payment_method" value="Credit / Debit Card">
+            <label for="pay_card" style="cursor:pointer; font-size:12px; font-weight:800; display:flex; align-items:center; gap:6px;">
+              <span>💳</span> Credit / Debit / ATM Card
+            </label>
+          </div>
+          <div id="form-card-block" class="pay-sub-form" style="display:none;">
+            <input type="text" placeholder="Card Number (16-digits)" maxlength="16" style="width:100%; padding:6px; font-size:11px; margin-bottom:4px; border:1px solid #cbd5e1; border-radius:4px;">
+            <div style="display:flex; gap:6px;">
+              <input type="text" placeholder="MM/YY" maxlength="5" style="width:50%; padding:6px; font-size:11px; border:1px solid #cbd5e1; border-radius:4px;">
+              <input type="password" placeholder="CVV" maxlength="3" style="width:50%; padding:6px; font-size:11px; border:1px solid #cbd5e1; border-radius:4px;">
+            </div>
+          </div>
+
+          <!-- 3. Net Banking -->
+          <div class="pay-card" id="opt-nb" onclick="selectPayMode('nb')">
+            <input type="radio" id="pay_nb" name="payment_method" value="Net Banking">
+            <label for="pay_nb" style="cursor:pointer; font-size:12px; font-weight:800; display:flex; align-items:center; gap:6px;">
+              <span>🏛️</span> Net Banking
+            </label>
+          </div>
+          <div id="form-nb-block" class="pay-sub-form" style="display:none;">
+            <select style="width:100%; padding:6px; font-size:11px; border:1px solid #cbd5e1; border-radius:4px;">
+              <option>HDFC Bank</option>
+              <option>State Bank of India (SBI)</option>
+              <option>ICICI Bank</option>
+              <option>Axis Bank</option>
+            </select>
+          </div>
+
+          <!-- 4. COD -->
+          <div class="pay-card" id="opt-cod" onclick="selectPayMode('cod')">
+            <input type="radio" id="pay_cod" name="payment_method" value="Cash On Delivery">
+            <label for="pay_cod" style="cursor:pointer; font-size:12px; font-weight:800; display:flex; align-items:center; gap:6px;">
+              <span>💵</span> Cash on Delivery (COD)
+            </label>
+          </div>
+          <div id="form-cod-block" class="pay-sub-form" style="display:none;">
+            <p style="color:#64748b; font-size:10px;">Pay via cash or UPI QR at your doorstep upon parcel arrival.</p>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit-order">
+          Confirm Apparel Order (<span id="modal-total-amt">₹0</span>)
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 10. LOCATION PICKER & GPS TRACKER MODAL -->
+  <div class="modal-overlay" id="location-picker-modal">
+    <div class="modal-card">
+      <button type="button" onclick="closeLocationPicker()" style="position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; cursor:pointer;">&times;</button>
+      <h3 style="font-size:15px; font-weight:900; color:#0f172a; margin-bottom:6px;">Set Delivery Pincode</h3>
+      <p style="font-size:11px; color:#64748b; margin-bottom:12px;">Fast 24-48 hr courier dispatch for Mumbai</p>
+
+      <button type="button" onclick="detectLiveGPSLocation()" style="background:#f0fdf4; border:1px solid #86efac; color:#15803d; font-weight:800; font-size:11px; padding:10px; border-radius:8px; width:100%; cursor:pointer; margin-bottom:10px; display:flex; align-items:center; justify-content:center; gap:6px;">
+        <span>📡</span> Detect My Live GPS Location
+      </button>
+      <div id="gps-status-msg" style="font-size:10px; color:#15803d; font-weight:700; text-align:center; margin-bottom:10px;"></div>
+
+      <div style="font-size:11px; font-weight:800; color:#334155; margin-bottom:6px;">Popular Mumbai Hubs:</div>
+      <div style="margin-bottom:14px;">
+        <span class="loc-chip" onclick="setDirectLocation('Kandivali, 400067')">Kandivali (400067)</span>
+        <span class="loc-chip" onclick="setDirectLocation('Borivali, 400092')">Borivali (400092)</span>
+        <span class="loc-chip" onclick="setDirectLocation('Andheri, 400058')">Andheri (400058)</span>
+        <span class="loc-chip" onclick="setDirectLocation('Thane, 400601')">Thane (400601)</span>
+        <span class="loc-chip" onclick="setDirectLocation('Mumbai, 400101')">Kandivali East (400101)</span>
+      </div>
+
+      <div class="f-group">
+        <label>Or Enter Custom 6-Digit Pincode:</label>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="manual-pin-input" placeholder="e.g. 400101" maxlength="6" style="flex:1;">
+          <button type="button" onclick="saveManualPincode()" style="background:#0f172a; color:#fff; border:none; padding:8px 14px; font-size:11px; font-weight:800; border-radius:6px; cursor:pointer;">Set</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. ORDER CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="order-confirmed-modal">
+    <div class="modal-card" style="text-align:center;">
+      <div style="width:50px; height:50px; border-radius:50%; background:#dcfce7; color:#15803d; font-size:26px; font-weight:bold; display:flex; align-items:center; justify-content:center; margin:0 auto 10px;">✓</div>
+      <h3 style="font-size:17px; font-weight:900; color:#0f172a;">Order Placed Successfully!</h3>
+      <p style="font-size:12px; color:#64748b; margin:6px 0 4px;">Mock Tracking ID: <strong>#SS-2026-TCSC</strong></p>
+      <p style="font-size:11px; color:#e11d48; font-weight:800; margin-bottom:10px;">Payment Mode: <span id="order-payment-method-name">Google Pay / UPI</span></p>
+      <div style="background:#eff6ff; padding:8px; border-radius:6px; font-size:11px; color:#1e40af; font-weight:700; margin-bottom:12px;">
+        📸 Tip: Take a screenshot of this confirmation for your college project report!
+      </div>
+      <button type="button" onclick="closeSuccess()" style="background:#0f172a; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-weight:800; font-size:12px; cursor:pointer; width:100%;">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- Footer with College Submission Details -->
+  <footer style="background:#0f172a; color:#94a3b8; font-size:11px; padding:20px 14px; text-align:center; border-top:1px solid #1e293b;">
+    <p style="color:#ffffff; font-weight:800; margin-bottom:4px;">SoulStreet Apparels - Academic E-Commerce Project</p>
+    <p>Thakur College of Science & Commerce | TYBMS E-Commerce & Digital Marketing</p>
+    <p style="color:#64748b; margin-top:4px;">&copy; 2026 SoulStreet Store. Built for Educational Demonstration Only.</p>
+  </footer>
+
+</body>
+</html>
